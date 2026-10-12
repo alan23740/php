@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "nombre": "Hamburguesa Clásica",
+        "categoria": "Hamburguesas",
+        "precio": 8.50,
+        "descripcion": "Carne a la parrilla, lechuga, tomate y salsa de la casa.",
+        "stock": 20
+    },
+    {
+        "id": 2,
+        "nombre": "Papas Fritas",
+        "categoria": "Acompañamientos",
+        "precio": 3.00,
+        "descripcion": "Papas doradas y crujientes, servidas calientes.",
+        "stock": 30
+    },
+    {
+        "id": 3,
+        "nombre": "Malteada de Vainilla",
+        "categoria": "Bebidas",
+        "precio": 4.50,
+        "descripcion": "Malteada cremosa preparada con helado de vainilla.",
+        "stock": 12
+    }
+]

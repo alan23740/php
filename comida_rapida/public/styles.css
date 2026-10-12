@@ -1,0 +1,361 @@
+:root {
+    --page-bg: #e9edf2;
+    --header-bg: #111f3d;
+    --header-dark: #0d1832;
+    --card-border: #d1d6de;
+    --card-bg: #f3f4f7;
+    --text: #1d2433;
+    --muted: #697684;
+    --accent: #3557d6;
+    --link: #2d5ac3;
+    --soft-text: #f2f2f2;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    min-height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--page-bg);
+    color: var(--text);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.site-header {
+    background: linear-gradient(180deg, var(--header-bg) 0%, var(--header-dark) 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.site-header .inner {
+    max-width: 1600px;
+    margin: 0 auto;
+    min-height: 84px;
+    padding: 0 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.04em;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.main-nav a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.main-nav a:hover {
+    text-decoration: underline;
+}
+
+.page-shell {
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 30px 60px 42px;
+}
+
+.catalog-title {
+    margin: 0 0 12px;
+    font-size: 2.75rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.catalog-tools {
+    margin: 0 0 18px;
+}
+
+.catalog-tools a {
+    color: var(--link);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.catalog-tools a:hover,
+.text-link:hover {
+    text-decoration: underline;
+}
+
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.content-card,
+.product-card {
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+}
+
+.product-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 16px;
+    min-height: 210px;
+}
+
+.product-thumb {
+    width: 200px;
+    height: 150px;
+    background: #dfe3e8;
+    border: 1px solid #c9ced6;
+    color: #8590a0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.product-name {
+    margin: 0 0 10px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+}
+
+.product-category {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.product-price {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.product-detail {
+    margin-top: auto;
+    padding-top: 12px;
+    text-align: right;
+}
+
+.product-detail a {
+    color: var(--link);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.product-detail a:hover {
+    text-decoration: underline;
+}
+
+.hero {
+    margin-bottom: 30px;
+    padding: 28px;
+}
+
+.hero p {
+    max-width: 720px;
+    color: var(--muted);
+    font-size: 1.08rem;
+    line-height: 1.6;
+}
+
+.text-link,
+.product-detail a {
+    color: var(--link);
+    text-decoration: none;
+}
+
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.featured-card,
+.detail-card,
+.contact-card,
+.form-card {
+    padding: 24px;
+}
+
+.featured-card h3,
+.detail-card h3,
+.contact-card h3 {
+    margin-top: 0;
+}
+
+.featured-card p,
+.detail-card p,
+.contact-card p {
+    line-height: 1.6;
+}
+
+.featured-card .product-price,
+.detail-card .product-price {
+    font-size: 1.05rem;
+}
+
+.form-card {
+    max-width: 760px;
+}
+
+.product-form {
+    display: grid;
+    gap: 16px;
+}
+
+.form-field {
+    display: grid;
+    gap: 7px;
+}
+
+.form-field label {
+    font-weight: 700;
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--card-border);
+    border-radius: 5px;
+    background: #fff;
+    color: var(--text);
+    font: inherit;
+}
+
+.form-field textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.button-link,
+.product-form button {
+    display: inline-block;
+    width: fit-content;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 5px;
+    background: var(--accent);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button-link:hover,
+.product-form button:hover {
+    background: #2848bd;
+}
+
+.site-footer {
+    margin-top: auto;
+    padding: 22px 60px 18px;
+    color: #515d6e;
+    font-size: 0.95rem;
+    text-align: left;
+    max-width: 1600px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 760px) {
+    .site-header .inner {
+        min-height: 72px;
+        padding: 12px 20px;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .brand {
+        font-size: 2rem;
+    }
+
+    .main-nav {
+        gap: 0.75rem;
+    }
+
+    .main-nav a {
+        font-size: 0.95rem;
+    }
+
+    .page-shell {
+        padding: 24px 20px 32px;
+    }
+
+    .site-footer {
+        padding: 22px 20px 18px;
+    }
+
+    .catalog-title {
+        font-size: 2.1rem;
+    }
+
+    .catalog-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .featured-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .product-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .product-thumb {
+        width: 100%;
+        max-width: 240px;
+    }
+
+    .hero,
+    .featured-card,
+    .detail-card,
+    .contact-card,
+    .form-card {
+        padding: 18px;
+    }
+}

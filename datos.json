@@ -1,0 +1,6 @@
+{
+  "estudiantes": [
+    { "id": 1, "nombre": "Ana Torres", "promedio": 91.5 },
+    { "id": 2, "nombre": "Luis Pérez", "promedio": 78.2 }
+  ]
+}

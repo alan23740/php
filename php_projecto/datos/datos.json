@@ -1,0 +1,19 @@
+[
+    {
+        "id": 1,
+        "nombre": "Mouse Inalambrico",
+        "categoria": "Periféricos",
+        "precio": 299.00,
+        "descripcion": "Mouse Inalambrico",
+        "stock": 50
+
+    },
+    {
+        "id": 2,
+        "nombre": "Teclado Inalambrico",
+        "categoria": "Periféricos",
+        "precio": 499.00,
+        "descripcion": "Teclado Inalambrico",
+        "stock": 30
+    }
+]
