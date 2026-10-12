@@ -8,7 +8,7 @@ $destacados = array_slice($productos, 0, 3);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Buen Bocado - Comida rápida</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/css/estilos.css">
 </head>
 <body>
     <header class="site-header">

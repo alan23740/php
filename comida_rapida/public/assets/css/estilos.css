@@ -1,0 +1,368 @@
+/*
+Ronda 1 — Fundación: variables y organización del archivo
+*/
+:root {
+    --color-fondo: #f4efe8;
+    --color-encabezado: #1d2a2f;
+    --color-principal: #c95a2f;
+    --color-acento: #f6c56b;
+    --color-texto: #243137;
+    --color-medio: #6f7d7d;
+    --color-borde: #d8c9b6;
+    --color-superficie: #fffdf9;
+    --fuente-principal: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    --escala-base: 1rem;
+    --radio: 14px;
+    --sombra-suave: 0 10px 24px rgba(29, 42, 47, 0.08);
+}
+
+/*
+Reset mínimo
+*/
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;
+    font-family: var(--fuente-principal);
+    background: linear-gradient(180deg, #f9f5ef 0%, var(--color-fondo) 100%);
+    color: var(--color-texto);
+    line-height: 1.5;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+/*
+Tipografía general
+*/
+a {
+    color: inherit;
+}
+
+h1, h2, h3, p {
+    margin-top: 0;
+}
+
+/*
+¿Qué pasaría si, en vez de variables, usaras el valor de color repetido en cada regla?
+Cada vez que el branding cambiara tendrías que actualizar varios selectores manualmente, se repetiría el mismo valor y sería muy fácil dejar inconsistencia visual. Las variables centralizan el control y hacen que el diseño sea mantenible.
+*/
+
+/*
+Ronda 2 — Selectores aplicados a la navegación
+*/
+.site-header {
+    background: var(--color-encabezado);
+    border-bottom: 4px solid var(--color-principal);
+}
+
+.site-header .inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--escala-base);
+}
+
+.brand {
+    color: var(--color-superficie);
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+}
+
+.main-nav a {
+    padding: 0.7rem 0.9rem;
+    border-radius: 999px;
+    color: var(--color-superficie);
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.main-nav a:hover,
+.main-nav a:first-child {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.main-nav a:hover {
+    transform: translateY(-1px);
+}
+
+/*
+Analiza: un selector de clase, como .main-nav a, tiene menor especificidad que un selector de id, como #menu a. Por eso es más fácil anularlo y reutilizarlo en diferentes secciones sin mezclar estilos inamovibles. Las clases hacen que el CSS sea más claro y mantenible.
+*/
+
+.page-shell {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+}
+
+.catalog-title {
+    margin-bottom: 1rem;
+    color: var(--color-texto);
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    line-height: 1.2;
+}
+
+.catalog-tools {
+    margin-bottom: 1.5rem;
+}
+
+.catalog-tools a,
+.text-link,
+.product-detail a,
+.button-link {
+    color: var(--color-principal);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.catalog-tools a:hover,
+.text-link:hover,
+.product-detail a:hover,
+.button-link:hover {
+    text-decoration: underline;
+}
+
+.catalog-grid,
+.featured-grid {
+    display: grid;
+    gap: 1.4rem;
+}
+
+.catalog-grid {
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+}
+
+.featured-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+/*
+Ronda 3 — Modelo de caja en la tarjeta de producto
+*/
+.product-card,
+.content-card,
+.detail-card,
+.form-card {
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra-suave);
+}
+
+.product-card {
+    display: flex;
+    align-items: stretch;
+    gap: 1rem;
+    padding: 1.1rem;
+    margin: 0 0 1.25rem;
+}
+
+.product-thumb {
+    width: 200px;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e8dcc8 0%, #f1ebdf 100%);
+    border: 1px solid rgba(36, 49, 55, 0.12);
+    border-radius: calc(var(--radio) - 4px);
+    color: var(--color-medio);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+.product-info {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.product-name {
+    color: var(--color-texto);
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.product-category,
+.product-price,
+.hero p,
+.featured-card p,
+.detail-card p,
+.contact-card p {
+    margin-bottom: 0.4rem;
+}
+
+.product-category,
+.hero p,
+.featured-card p,
+.detail-card p {
+    color: var(--color-medio);
+}
+
+.product-price {
+    color: var(--color-texto);
+    font-weight: 800;
+}
+
+.product-detail {
+    margin-top: auto;
+    text-align: right;
+}
+
+/*
+content-box: el ancho del contenido no incluye padding ni border. border-box: el ancho declarado ya incluye padding y borde, por lo que el contenido se ajusta sin “romper” el ancho de la tarjeta y sin desalinear el flujo del layout.
+*/
+
+.hero,
+.featured-card,
+.detail-card,
+.form-card {
+    padding: 1.5rem;
+}
+
+.hero {
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, rgba(201, 90, 47, 0.08), rgba(246, 197, 107, 0.12));
+}
+
+.hero .catalog-title {
+    margin-bottom: 0.75rem;
+}
+
+.button-link {
+    display: inline-block;
+    margin-top: 0.75rem;
+    padding: 0.75rem 1.1rem;
+    background: var(--color-principal);
+    color: var(--color-superficie);
+    border-radius: 999px;
+}
+
+.button-link:hover {
+    text-decoration: none;
+    background: #b14d27;
+}
+
+/*
+Ronda 4 — Tipografía y jerarquía visual
+*/
+.catalog-title,
+.product-name,
+.product-price,
+.product-category,
+label,
+button {
+    letter-spacing: -0.02em;
+}
+
+.catalog-title {
+    font-size: clamp(2rem, 2.8vw, 2.75rem);
+}
+
+.product-name {
+    font-size: 1.45rem;
+    line-height: 1.3;
+}
+
+.product-price {
+    font-size: 1.1rem;
+}
+
+.product-category,
+label,
+input,
+textarea,
+button,
+.hero p,
+.featured-card p,
+.detail-card p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/*
+rem respeta la configuración de accesibilidad del navegador porque su tamaño se calcula desde el tamaño base del documento. Si el usuario aumenta la escala en su navegador, todos los rem se ajustan proporcionalmente sin perder jerarquía visual.
+*/
+
+label {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: var(--color-texto);
+    font-weight: 700;
+}
+
+.product-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.form-field {
+    display: grid;
+}
+
+.form-field input,
+.form-field textarea {
+    width: 100%;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid var(--color-borde);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--color-texto);
+    font: inherit;
+}
+
+.form-field textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+button {
+    width: fit-content;
+    padding: 0.85rem 1.2rem;
+    border: none;
+    border-radius: 999px;
+    background: var(--color-principal);
+    color: var(--color-superficie);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #b14d27;
+}
+
+.site-footer {
+    padding: 1.25rem 1rem 2rem;
+    text-align: center;
+    color: var(--color-medio);
+}
+
+/*
+Componentes construidos hoy: header, navegación, tarjeta de producto, hero, detalle del producto y formulario de alta.
+*/
