@@ -1,0 +1,9 @@
+src/config/conexion.php
+.env
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Bitácoras y temporales
+*.log
