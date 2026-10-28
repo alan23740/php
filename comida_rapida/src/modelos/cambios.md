@@ -1,0 +1,1 @@
+Se crearon modelos de producto para que la vista de producto-detalle mostrara los datos de los productos de una forma ordenada 
