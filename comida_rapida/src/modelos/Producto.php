@@ -4,6 +4,8 @@ require_once __DIR__ . "/Categoria.php";
 
 class Producto
 {
+    private const CAMPOS_OBLIGATORIOS = ['id', 'nombre', 'categoria', 'precio', 'descripcion', 'stock', 'imagen'];
+
     private int $id;
     private string $nombre;
     private Categoria $categoria;
@@ -52,9 +54,19 @@ class Producto
         return $this->id;
     }
 
+    public function obtenerId(): int
+    {
+        return $this->getId();
+    }
+
     public function getNombre(): string
     {
         return $this->nombre;
+    }
+
+    public function obtenerNombre(): string
+    {
+        return $this->getNombre();
     }
 
     public function getCategoria(): Categoria
@@ -62,9 +74,29 @@ class Producto
         return $this->categoria;
     }
 
+    public function obtenerCategoria(): Categoria
+    {
+        return $this->getCategoria();
+    }
+
     public function getPrecio(): float
     {
         return $this->precio;
+    }
+
+    public function obtenerPrecio(): float
+    {
+        return $this->getPrecio();
+    }
+
+    public function getPrecioFormateado(): string
+    {
+        return '$' . number_format($this->precio, 2);
+    }
+
+    public function obtenerPrecioFormateado(): string
+    {
+        return $this->getPrecioFormateado();
     }
 
     public function getDescripcion(): string
@@ -72,13 +104,33 @@ class Producto
         return $this->descripcion;
     }
 
+    public function obtenerDescripcion(): string
+    {
+        return $this->getDescripcion();
+    }
+
     public function getStock(): int
     {
         return $this->stock;
     }
 
+    public function obtenerStock(): int
+    {
+        return $this->getStock();
+    }
+
+    public function estaDisponible(): bool
+    {
+        return $this->getStock() > 0;
+    }
+
     public function getImagen(): string
     {
         return $this->imagen;
+    }
+
+    public function obtenerImagen(): string
+    {
+        return $this->getImagen();
     }
 }

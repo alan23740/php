@@ -12,8 +12,21 @@ class RepositorioProductos
         $this->rutaArchivo = $rutaArchivo;
     }
 
-    // Paso temporal: todavía devuelve arreglos. En 2.2 devolverá objetos.
-    
+    public function obtenerTodos(): array
+    {
+        return $this->convertirAProductos($this->leerRegistros());
+    }
+
+    public function buscarPorId(int $id): Producto
+    {
+        foreach ($this->obtenerTodos() as $producto) {
+            if ($producto->obtenerId() === $id) {
+                return $producto;
+            }
+        }
+
+        throw new OutOfBoundsException("No existe un producto con id $id.");
+    }
 
     private function leerRegistros(): array
     {
@@ -30,12 +43,16 @@ class RepositorioProductos
 
         return $registros;
     }
+
     private function convertirAProductos(array $registros): array
     {
         return array_map(
-            fn (array $registro) => Producto::desdeArreglo($registro),
+            static fn (array $registro): Producto => Producto::desdeArray($registro),
             $registros
         );
     }
+}
 
+class ComidaProductos extends RepositorioProductos
+{
 }
