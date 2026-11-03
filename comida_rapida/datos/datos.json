@@ -5,7 +5,8 @@
         "categoria": "Hamburguesas",
         "precio": 8.50,
         "descripcion": "Carne a la parrilla, lechuga, tomate y salsa de la casa.",
-        "stock": 20
+        "stock": 20,
+        "imagen": "https://example.com/images/hamburguesa_clasica.jpg"
     },
     {
         "id": 2,
@@ -13,7 +14,8 @@
         "categoria": "Acompañamientos",
         "precio": 3.00,
         "descripcion": "Papas doradas y crujientes, servidas calientes.",
-        "stock": 30
+        "stock": 30,
+        "imagen": "https://example.com/images/papas_fritas.jpg"
     },
     {
         "id": 3,
@@ -21,6 +23,34 @@
         "categoria": "Bebidas",
         "precio": 4.50,
         "descripcion": "Malteada cremosa preparada con helado de vainilla.",
-        "stock": 12
+        "stock": 12,
+        "imagen": "https://example.com/images/malteada_vainilla.jpg"
+    },
+    {
+        "id" : 4,
+        "nombre" : "Pizza Pepperoni",
+        "categoria" : "Pizzas",
+        "precio" : 12.00,
+        "descripcion" : "Pizza con salsa de tomate, queso mozzarella y pepperoni.",
+        "stock" : 15,
+        "imagen": "https://example.com/images/pizza_pepperoni.jpg"
+    },
+    {
+        "id" : 5,
+        "nombre" : "Ensalada César",
+        "categoria" : "Ensaladas",
+        "precio" : 7.00,
+        "descripcion" : "Lechuga fresca, crutones, queso parmesano y aderezo César.",
+        "stock" : 0,
+        "imagen": "https://example.com/images/ensalada_cesar.jpg"
+    },
+    {
+        "id" : 6,
+        "nombre" : "Taco de Carnitas",
+        "categoria" : "Tacos",
+        "precio" : 5.00,
+        "descripcion" : "Taco con carne de cerdo asada, cebolla, cilantro y salsa.",
+        "stock" : 0,
+        "imagen": "https://example.com/images/taco_carnitas.jpg"
     }
 ]
