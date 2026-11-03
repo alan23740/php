@@ -13,10 +13,7 @@ class RepositorioProductos
     }
 
     // Paso temporal: todavía devuelve arreglos. En 2.2 devolverá objetos.
-    public function obtenerTodos(): array
-    {
-        return $this->leerRegistros();
-    }
+    
 
     private function leerRegistros(): array
     {
@@ -33,4 +30,12 @@ class RepositorioProductos
 
         return $registros;
     }
+    private function convertirAProductos(array $registros): array
+    {
+        return array_map(
+            fn (array $registro) => Producto::desdeArreglo($registro),
+            $registros
+        );
+    }
+
 }
