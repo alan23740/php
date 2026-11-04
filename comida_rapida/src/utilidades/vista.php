@@ -13,7 +13,7 @@ function mostrarTarjetaProducto(Producto $producto, int $nivelTitulo = 2): void
 {
     $titulo = 'h' . $nivelTitulo;
     $nombre = escapar($producto->obtenerNombre());
-    $categoria = escapar($producto->obtenerCategoria()->obtenerNombre());
+    $categoria = escapar($producto->obtenerCategoria()->getNombre());
     ?>
     <article class="product-card">
         <img class="product-thumb" src="<?= escapar($producto->obtenerImagen()) ?>" alt="Foto de <?= $nombre ?>">

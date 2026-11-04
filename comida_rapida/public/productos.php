@@ -1,10 +1,13 @@
 <?php
-require_once __DIR__ . '/../src/modelos/Producto.php';
+declare(strict_types=1);
 
-$archivoDatos = __DIR__ . '/../datos/datos.json';
-$datosProductos = json_decode(file_get_contents($archivoDatos), true, 512, JSON_THROW_ON_ERROR);
-$productos = array_map(static fn (array $datos): Producto => Producto::desdeArray($datos), $datosProductos);
+require_once __DIR__ . '/../src/datos/ComidaProductos.php';
+require_once __DIR__ . '/../src/utilidades/vista.php';
+
+$repositorio = new ComidaProductos(__DIR__ . '/../datos/datos.json');
+$productos = $repositorio->obtenerTodos();
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -37,19 +40,7 @@ $productos = array_map(static fn (array $datos): Producto => Producto::desdeArra
                 <p>Por ahora no hay productos en el menú.</p>
             <?php else: ?>
                 <?php foreach ($productos as $producto): ?>
-                    <article class="product-card">
-                        <div class="product-thumb">200 × 150</div>
-                        <div class="product-info">
-                            <h3 class="product-name"><?= htmlspecialchars($producto->getNombre(), ENT_QUOTES, 'UTF-8') ?></h3>
-                            <p class="product-category">Categoría: <?= htmlspecialchars($producto->getCategoria()->getNombre(), ENT_QUOTES, 'UTF-8') ?></p>
-                            <p><?= htmlspecialchars($producto->getDescripcion(), ENT_QUOTES, 'UTF-8') ?></p>
-                            <p class="product-price">Precio: $<?= number_format($producto->getPrecio(), 2) ?></p>
-                            <p>Disponibles: <?= $producto->getStock() ?></p>
-                            <div class="product-detail">
-                                <a href="producto-detalle.php?id=<?= $producto->getId() ?>">Ver detalle</a>
-                            </div>
-                        </div>
-                    </article>
+                    <?php mostrarTarjetaProducto($producto, 3); ?>
                 <?php endforeach; ?>
             <?php endif; ?>
         </section>
