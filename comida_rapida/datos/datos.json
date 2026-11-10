@@ -3,7 +3,7 @@
         "id": 1,
         "nombre": "Hamburguesa Clásica",
         "categoria": "Hamburguesas",
-        "precio": 8.50,
+        "precio": 9.50,
         "descripcion": "Carne a la parrilla, lechuga, tomate y salsa de la casa.",
         "stock": 20,
         "imagen": "https://example.com/images/hamburguesa_clasica.jpg"

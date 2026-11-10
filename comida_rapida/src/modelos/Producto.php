@@ -36,16 +36,60 @@ class Producto
    public static function desdeArray(array $datos): self
     {
         self::exigirCamposObligatorios($datos);
-        $categoria = new Categoria($datos["categoria"]);
+
+        $id = self::enteroEnRango($datos, 'id', 1);
+        $stock = self::enteroEnRango($datos, 'stock', 0);
+        $precio = self::precioValido($datos);
+
         return new self(
-            (int)$datos["id"],
-            (string)$datos["nombre"],
-            $categoria,
-            (float)$datos["precio"],
-            (string)$datos["descripcion"],
-            (int)$datos["stock"],
-            (string)$datos["imagen"]
+            $id,
+            self::textoRequerido($datos, 'nombre'),
+            new Categoria(self::textoRequerido($datos, 'categoria')),
+            $precio,
+            self::textoRequerido($datos, 'descripcion'),
+            $stock,
+            self::textoRequerido($datos, 'imagen')
         );
+    }
+
+    private static function textoRequerido(array $datos, string $campo): string
+    {
+        $valor = $datos[$campo];
+        if (!is_string($valor) || trim($valor) === '') {
+            throw new InvalidArgumentException("El campo {$campo} debe ser texto no vacío.");
+        }
+
+        return $valor;
+    }
+
+    private static function enteroEnRango(array $datos, string $campo, int $minimo): int
+    {
+        $valor = $datos[$campo];
+        if (!is_int($valor) && !is_string($valor)) {
+            throw new InvalidArgumentException("El campo {$campo} debe ser un entero.");
+        }
+
+        $entero = filter_var($valor, FILTER_VALIDATE_INT);
+        if ($entero === false || $entero < $minimo) {
+            throw new InvalidArgumentException("El campo {$campo} debe ser un entero mayor o igual a {$minimo}.");
+        }
+
+        return $entero;
+    }
+
+    private static function precioValido(array $datos): float
+    {
+        $valor = $datos['precio'];
+        if (!is_int($valor) && !is_float($valor) && !is_string($valor)) {
+            throw new InvalidArgumentException('El campo precio debe ser numérico.');
+        }
+
+        $precio = filter_var($valor, FILTER_VALIDATE_FLOAT);
+        if ($precio === false || $precio < 0) {
+            throw new InvalidArgumentException('El campo precio debe ser un número mayor o igual a cero.');
+        }
+
+        return $precio;
     }
     
 

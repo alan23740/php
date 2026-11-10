@@ -3,10 +3,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = trim($_POST['nombre'] ?? '');
     $categoria = trim($_POST['categoria'] ?? '');
     $descripcion = trim($_POST['descripcion'] ?? '');
+    $imagen = trim($_POST['imagen'] ?? '');
     $precio = filter_input(INPUT_POST, 'precio', FILTER_VALIDATE_FLOAT);
     $stock = filter_input(INPUT_POST, 'stock', FILTER_VALIDATE_INT);
+    $esquemaImagen = strtolower((string) parse_url($imagen, PHP_URL_SCHEME));
 
-    if ($nombre === '' || $categoria === '' || $descripcion === '' || $precio === false || $precio === null || $precio < 0 || $stock === false || $stock === null || $stock < 0) {
+    if (
+        $nombre === ''
+        || $categoria === ''
+        || $descripcion === ''
+        || filter_var($imagen, FILTER_VALIDATE_URL) === false
+        || !in_array($esquemaImagen, ['http', 'https'], true)
+        || $precio === false
+        || $precio === null
+        || $precio < 0
+        || $stock === false
+        || $stock === null
+        || $stock < 0
+    ) {
         http_response_code(400);
         exit('Revisa los datos del producto e inténtalo de nuevo.');
     }
@@ -26,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'precio' => $precio,
         'descripcion' => $descripcion,
         'stock' => $stock,
+        'imagen' => $imagen,
     ];
 
     $json = json_encode($productos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
@@ -72,6 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="form-field">
                     <label for="descripcion">Descripción</label>
                     <textarea id="descripcion" name="descripcion" required></textarea>
+                </div>
+                <div class="form-field">
+                    <label for="imagen">URL de la imagen</label>
+                    <input id="imagen" name="imagen" type="url" required>
                 </div>
                 <div class="form-field">
                     <label for="precio">Precio</label>

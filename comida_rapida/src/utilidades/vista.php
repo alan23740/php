@@ -11,6 +11,10 @@ function escapar(string $texto): string
 
 function mostrarTarjetaProducto(Producto $producto, int $nivelTitulo = 2): void
 {
+    if ($nivelTitulo < 1 || $nivelTitulo > 6) {
+        throw new InvalidArgumentException('El nivel del título debe estar entre 1 y 6.');
+    }
+
     $titulo = 'h' . $nivelTitulo;
     $nombre = escapar($producto->obtenerNombre());
     $categoria = escapar($producto->obtenerCategoria()->getNombre());
