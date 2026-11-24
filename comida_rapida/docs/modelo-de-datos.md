@@ -18,6 +18,7 @@
 - Los correos de clientes y usuarios, y los nombres de categorías, son únicos.
 - El precio y el precio unitario usan `DECIMAL(10,2)`; existencias y cantidades son enteros.
 - `sql/er-comida-rapida.dbml` contiene el mismo modelo para visualizarlo en dbdiagram.io.
+- El diagrama entregable es [er-comida-rapida.png](../sql/er-comida-rapida.png), generado desde `sql/er-comida-rapida.dot`.
 
 ## Migración desde `datos/datos.json`
 

@@ -4,41 +4,64 @@ Catálogo de comida rápida en PHP. La página `productos.php` conserva la lectu
 
 ## Entorno y conexión
 
-Se requiere PHP con `pdo_mysql` y un servidor MariaDB/MySQL accesible. En el entorno de la guía U3S08, los datos de desarrollo son: host `127.0.0.1`, puerto `3306`, base `proyecto`, usuario `app` y contraseña `app123`.
+El repositorio configura Codespaces con [.devcontainer/devcontainer.json](../.devcontainer/devcontainer.json). En una reconstrucción instala PHP, `pdo_mysql`, MariaDB, Adminer y Graphviz; al iniciar prepara MariaDB y la base de desarrollo.
 
-1. Inicia MariaDB y crea la base `proyecto` si todavía no existe.
-2. Copia `src/config/conexion.ejemplo.php` a `src/config/conexion.php`. Este último archivo está excluido de Git; ajusta sus valores o define `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` y `DB_PASSWORD`.
-3. Crea las tablas y carga los productos convertidos desde JSON:
+Desde la raíz del repositorio, verifica el entorno y, si MariaDB no está activa, iníciala:
 
-   ```sh
-   mysql -u app -papp123 -h 127.0.0.1 proyecto < sql/esquema.sql
-   php sql/generar-inserts.php | mysql -u app -papp123 -h 127.0.0.1 proyecto
-   ```
+```sh
+bash .devcontainer/iniciar-mariadb.sh
+php comida_rapida/entorno/verificar-entorno.php
+```
 
-4. Comprueba la equivalencia del JOIN con el archivo JSON:
+El script crea `src/config/conexion.php` desde la plantilla solo si el archivo aún no existe; no sobrescribe una configuración local existente.
 
-   ```sh
-   php sql/verificar-migracion.php
-   ```
+En Codespaces, usa los puertos reenviados 3000, 8080 y 3306. Para configurar otra instalación, los datos locales de desarrollo son: host `127.0.0.1`, puerto `3306`, base `proyecto`, usuario `app`, contraseña `app123`.
 
-5. Inicia el servidor web y abre `http://localhost:3000/productos-bd.php`:
+## Importar y consultar el catálogo
 
-   ```sh
-   php -S localhost:3000 -t public
-   ```
+Desde la carpeta del proyecto (`comida_rapida/`), crea las tablas y carga los productos actuales desde JSON:
 
-`sql/esquema.sql` recrea las tablas desde cero. Para regenerar los INSERT después de cambiar `datos/datos.json`, vuelve a ejecutar el generador. `sql/consultas.sql` contiene consultas de conteo, filtrado, agrupación, suma y el JOIN de comprobación.
+```sh
+mysql -u app -papp123 -h 127.0.0.1 proyecto < sql/esquema.sql
+php sql/generar-inserts.php | mysql -u app -papp123 -h 127.0.0.1 proyecto
+php sql/verificar-migracion.php
+```
+
+**Advertencia:** `sql/esquema.sql` elimina y recrea las tablas; la importación borra los datos que haya en ellas. El generador conserva los IDs, precios y demás campos del catálogo JSON y normaliza las categorías.
+
+`sql/consultas.sql` contiene consultas para el JOIN de migración, conteo, productos agotados, agrupación por categoría y valor del inventario. Para ejecutar la prueba de integridad sin dejar cambios:
+
+```sh
+php sql/probar-integridad.php
+```
+
+## Servidores locales
+
+Abre dos terminales desde la carpeta `comida_rapida/`. Inicia el sitio en el puerto 3000 y Adminer en el 8080:
+
+```sh
+php -S localhost:3000 -t public
+php -S localhost:8080 -t dev
+```
+
+El catálogo JSON está en `http://localhost:3000/productos.php` y el catálogo SQL en `http://localhost:3000/productos-bd.php`. Adminer abre en `http://localhost:8080/adminer.php`; selecciona MariaDB/MySQL, servidor `127.0.0.1`, base `proyecto` y las credenciales locales descritas arriba.
+
+El modelo relacional está en [sql/er-comida-rapida.dbml](sql/er-comida-rapida.dbml) y su imagen en [sql/er-comida-rapida.png](sql/er-comida-rapida.png). El PNG se genera desde su fuente Graphviz con `dot -Tpng -Gdpi=160 sql/er-comida-rapida.dot -o sql/er-comida-rapida.png`.
 
 ## Entregables del modelo
 
 - Diagrama y reglas: [docs/modelo-de-datos.md](docs/modelo-de-datos.md)
 - DBML importable en dbdiagram.io: [sql/er-comida-rapida.dbml](sql/er-comida-rapida.dbml)
 - Pruebas de llaves y restricciones: [docs/laboratorio-de-integridad.md](docs/laboratorio-de-integridad.md)
+- Registro general de las actividades U3S08: [docs/bitacora-u3s08.md](docs/bitacora-u3s08.md)
+- Resultados completos de las consultas: [docs/registro-consultas-sql.md](docs/registro-consultas-sql.md)
 
-## Respuestas de referencia para la bitácora
+## Prueba con MariaDB detenida
 
-Adapta la segunda respuesta a los errores que observes al ejecutar el laboratorio.
+El 24 de noviembre de 2026 se detuvo MariaDB durante una comprobación breve. `productos-bd.php` respondió HTTP 500 y el servidor registró `SQLSTATE[HY000] [2002] Connection refused`. Se inició MariaDB inmediatamente después; la página volvió a responder HTTP 200 y el catálogo conservó sus seis productos. El detalle está en [docs/bitacora-u3s08.md](docs/bitacora-u3s08.md).
+
+## Respuestas de bitácora
 
 1. En JSON el nombre de la categoría se repetía en cada producto, así que corregirlo podía requerir cambiar varias filas y era fácil dejar valores inconsistentes. La tabla `categorias` evita esa repetición; la llave foránea también evita borrar una categoría mientras haya productos que dependan de ella.
-2. La llave foránea de `productos.categoria_id` detecta una referencia a una categoría inexistente (error 1452). Con el JSON sin validar, un nombre de categoría mal escrito podía guardarse sin que el archivo lo rechazara.
+2. **Respuesta sugerida para personalizar:** Me sorprendió que la base rechazara borrar una categoría que todavía tiene productos (error 1451). La llave foránea conserva la integridad; con JSON no existe esa protección automática.
 3. Se conservaron los productos y sus campos; la categoría pasó de texto repetido a `categoria_id`, que se vuelve a presentar como nombre mediante un JOIN. Mantener el contrato de campos permite que la vista reutilice el modelo y que la comparación entre JSON y SQL compruebe que la migración no perdió información.

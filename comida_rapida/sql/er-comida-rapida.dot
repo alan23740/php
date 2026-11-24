@@ -1,0 +1,88 @@
+digraph ModeloBuenBocado {
+    graph [
+        rankdir=LR,
+        bgcolor="#f8f6f1",
+        pad="0.35",
+        nodesep="0.65",
+        ranksep="1.0",
+        fontname="Arial",
+        label="Modelo relacional — Buen Bocado",
+        labelloc="t",
+        fontsize=20
+    ];
+    node [shape=plain, fontname="Arial"];
+    edge [
+        color="#52636a",
+        fontname="Arial",
+        fontsize=10,
+        arrowsize=0.8,
+        label="1 a muchos"
+    ];
+
+    categorias [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7">
+            <TR><TD BGCOLOR="#1d2a2f"><FONT COLOR="white"><B>categorias</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT"><B>PK</B> id INT</TD></TR>
+            <TR><TD ALIGN="LEFT">nombre VARCHAR(60) UNIQUE</TD></TR>
+        </TABLE>
+    >];
+
+    productos [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7">
+            <TR><TD BGCOLOR="#1d2a2f"><FONT COLOR="white"><B>productos</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT"><B>PK</B> id INT</TD></TR>
+            <TR><TD ALIGN="LEFT"><B>FK</B> categoria_id INT</TD></TR>
+            <TR><TD ALIGN="LEFT">nombre VARCHAR(120)</TD></TR>
+            <TR><TD ALIGN="LEFT">descripcion VARCHAR(255)</TD></TR>
+            <TR><TD ALIGN="LEFT">precio DECIMAL(10,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">stock INT</TD></TR>
+            <TR><TD ALIGN="LEFT">imagen VARCHAR(255)</TD></TR>
+        </TABLE>
+    >];
+
+    clientes [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7">
+            <TR><TD BGCOLOR="#1d2a2f"><FONT COLOR="white"><B>clientes</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT"><B>PK</B> id INT</TD></TR>
+            <TR><TD ALIGN="LEFT">nombre VARCHAR(100)</TD></TR>
+            <TR><TD ALIGN="LEFT">correo VARCHAR(120) UNIQUE</TD></TR>
+            <TR><TD ALIGN="LEFT">contrasena_hash VARCHAR(255)</TD></TR>
+        </TABLE>
+    >];
+
+    usuarios [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7">
+            <TR><TD BGCOLOR="#1d2a2f"><FONT COLOR="white"><B>usuarios</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT"><B>PK</B> id INT</TD></TR>
+            <TR><TD ALIGN="LEFT">nombre VARCHAR(100)</TD></TR>
+            <TR><TD ALIGN="LEFT">correo VARCHAR(120) UNIQUE</TD></TR>
+            <TR><TD ALIGN="LEFT">contrasena_hash VARCHAR(255)</TD></TR>
+        </TABLE>
+    >];
+
+    pedidos [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7">
+            <TR><TD BGCOLOR="#1d2a2f"><FONT COLOR="white"><B>pedidos</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT"><B>PK</B> id INT</TD></TR>
+            <TR><TD ALIGN="LEFT"><B>FK</B> cliente_id INT</TD></TR>
+            <TR><TD ALIGN="LEFT">fecha DATETIME</TD></TR>
+            <TR><TD ALIGN="LEFT">estado ENUM</TD></TR>
+        </TABLE>
+    >];
+
+    detalles_pedido [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="7">
+            <TR><TD BGCOLOR="#1d2a2f"><FONT COLOR="white"><B>detalles_pedido</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT"><B>PK</B> id INT</TD></TR>
+            <TR><TD ALIGN="LEFT"><B>FK</B> pedido_id INT</TD></TR>
+            <TR><TD ALIGN="LEFT"><B>FK</B> producto_id INT</TD></TR>
+            <TR><TD ALIGN="LEFT">cantidad INT</TD></TR>
+            <TR><TD ALIGN="LEFT">precio_unitario DECIMAL(10,2)</TD></TR>
+        </TABLE>
+    >];
+
+    categorias -> productos [tailport=e, headport=w];
+    clientes -> pedidos [tailport=e, headport=w];
+    pedidos -> detalles_pedido [tailport=e, headport=w, label="1 a muchos; cascada"];
+    productos -> detalles_pedido [tailport=e, headport=w, label="1 a muchos"];
+}

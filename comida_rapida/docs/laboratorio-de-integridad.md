@@ -1,20 +1,40 @@
 # Laboratorio de integridad — Buen Bocado
 
-Ejecuta cada caso por separado contra una base con el esquema y los datos iniciales cargados. Inicia una transacción antes de cada prueba y ejecuta `ROLLBACK` después del error esperado. Si una sentencia no produce el error indicado, revierte inmediatamente y revisa el esquema.
+Se ejecutaron los cinco casos contra la base `proyecto` en MariaDB. El script [probar-integridad.php](../sql/probar-integridad.php) abre una transacción por caso y ejecuta `ROLLBACK` tanto tras el error esperado como antes de fallar si una sentencia no genera una excepción.
 
-El caso de campo obligatorio presupone un modo estricto de MariaDB; actívalo en la conexión de pruebas:
+El caso de campo obligatorio requiere el modo estricto. La sesión probada tenía `STRICT_TRANS_TABLES`.
 
-```sql
-SET SESSION sql_mode = CONCAT(@@SESSION.sql_mode, ',STRICT_TRANS_TABLES');
+| # | Prueba | Resultado real | Regla | Qué habría pasado en JSON |
+|---|---|---|---|---|
+| 1 | Insertar un producto con `categoria_id = 999999`. | SQLSTATE `23000`, MariaDB `1452`. | `fk_productos_categoria` requiere que exista la categoría. | Un nombre de categoría inventado podría almacenarse como texto; el JSON no comprueba referencias. |
+| 2 | Insertar otra categoría llamada `Hamburguesas`. | SQLSTATE `23000`, MariaDB `1062`: `Duplicate entry 'Hamburguesas' for key 'uq_categorias_nombre'`. | `uq_categorias_nombre` impide nombres repetidos en la tabla de categorías. | La categoría se repite como texto por producto; no hay una tabla de categorías que garantice unicidad. |
+| 3 | Borrar la categoría `Hamburguesas`, que tiene productos. | SQLSTATE `23000`, MariaDB `1451`. | La llave foránea impide borrar la categoría mientras existan productos dependientes. | No hay una fila padre que proteger; borrar o renombrar el texto requeriría actualizar productos y podría dejar inconsistencias. |
+| 4 | Insertar un producto omitiendo `descripcion`. | SQLSTATE `HY000`, MariaDB `1364`: `Field 'descripcion' doesn't have a default value`. | `productos.descripcion` es `NOT NULL` y no tiene valor por defecto. | JSON permite omitir la clave al editar el archivo; `Producto::desdeArray()` lo detectaría al cargar el producto. |
+| 5 | Consultar `SELECT * FROM productoss;`. | SQLSTATE `42S02`, MariaDB `1146`: `Table 'proyecto.productoss' doesn't exist`. | El nombre correcto de la tabla es `productos`. | No hay tablas ni SQL; el consumidor del JSON no ejecutaría esta consulta. |
+
+Cada caso mostró el código esperado y terminó con `ROLLBACK`; el ensayo no añadió ni borró filas.
+
+### Mensajes exactos de MariaDB observados
+
+```text
+1. Cannot add or update a child row: a foreign key constraint fails (`proyecto`.`productos`, CONSTRAINT `fk_productos_categoria` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`))
+2. Duplicate entry 'Hamburguesas' for key 'uq_categorias_nombre'
+3. Cannot delete or update a parent row: a foreign key constraint fails (`proyecto`.`productos`, CONSTRAINT `fk_productos_categoria` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`id`))
+4. Field 'descripcion' doesn't have a default value
+5. Table 'proyecto.productoss' doesn't exist
 ```
 
-| # | Prueba | Error esperado | Restricción |
-|---|---|---|---|
-| 1 | Insertar un producto con `categoria_id = 999999`. | `1452 Cannot add or update a child row` | `fk_productos_categoria` exige una categoría existente. |
-| 2 | Insertar otra categoría con nombre `Hamburguesas` y un ID nuevo. | `1062 Duplicate entry` | `uq_categorias_nombre` hace único el nombre. |
-| 3 | Borrar la categoría `Hamburguesas`, que tiene productos. | `1451 Cannot delete or update a parent row` | La llave foránea de productos impide borrar una categoría en uso. |
-| 4 | Insertar un producto omitiendo `descripcion`. | `1364 Field 'descripcion' doesn't have a default value` en modo estricto | `productos.descripcion` es `NOT NULL` y no tiene valor por defecto. |
-| 5 | Consultar `SELECT * FROM productoss;`. | `1146 Table 'proyecto.productoss' doesn't exist` | La tabla correcta se llama `productos`. |
+## Reproducir
+
+```sh
+php sql/probar-integridad.php
+```
+
+Salida final observada:
+
+```text
+OK: las cinco pruebas produjeron el error esperado y no dejaron cambios.
+```
 
 ## SQL para reproducir los errores
 
@@ -52,4 +72,4 @@ ROLLBACK;
 SELECT * FROM productoss;
 ```
 
-Los códigos anteriores son los resultados esperados en MariaDB/MySQL; deben cotejarse con el mensaje real del servidor al ejecutar la práctica.
+Los mensajes reales pueden incluir nombres de esquema o formato distintos según la versión de MariaDB/MySQL; se registran aquí los códigos y mensajes obtenidos en esta ejecución.
